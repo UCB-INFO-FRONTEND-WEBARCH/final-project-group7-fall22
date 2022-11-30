@@ -1,23 +1,23 @@
 /* header section */
 .header {
-    width: 100%;
+    background-color: #5e548e;
+    width:100%;
+    color: #ffffff;
+    text-align: center;
+    font-size: 5vw;
+    font-weight: bold;
     cursor: pointer;
-    position: fixed;
+    padding-bottom: 10px;
+
+    /* fixed position and add some border shadow */
+    position: fixed; 
+    box-shadow: 0px 1px 5px black;
+    text-transform: uppercase;
+
+    /* flex box centered */
     display: flex;
     justify-content: center;
-    text-transform: uppercase;
-    background-color: #39445a;
-    font-family: "Montserrat", sans-serif;
-    font-size: 5vw;
-    padding-bottom: 15px;
-    box-shadow: 0px 1px 5px black;
-    color: white;
-    z-index: 100;
-}
 
-@media (max-width: 1000px) {
-    .header {
-        padding-top: 15px;
-        font-size: 6.4vw;
-    }
+    z-index: 100;
+
 }
