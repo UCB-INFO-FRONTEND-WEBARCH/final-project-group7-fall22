@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+
 import TvIcon from "@material-ui/icons/Tv";
 import MovieIcon from "@material-ui/icons/Movie";
 import SearchIcon from "@material-ui/icons/Search";
@@ -20,20 +21,20 @@ const useStyles = makeStyles({
 
 export default function SimpleBottomNavigation() {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
-    const history = useNavigate();
+    const [value, setValue] = useState(0); //default value is, trending page
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (value === 0) {
-            history.push("/");
+            navigate("/");
         } else if (value === 1) {
-            history.push("/movies");
+            navigate("/movies");
         } else if (value === 2) {
-            history.push("/series");
+            navigate("/series");
         } else if (value === 3) {
-            history.push("/search");
+            navigate("/search");
         }
-    }, [value, history]);
+    }, [value, navigate]);
 
     return (
         <BottomNavigation

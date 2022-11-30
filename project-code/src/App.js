@@ -14,14 +14,14 @@ function App() {
       <Header />
       <div className="app">
         <Routes>
-          <Route path="/" component={Trending} exact />
-          <Route path="/movies" component={Movies} />
-          <Route path="/series" component={Series} />
-          <Route path="/search" component={Search} />
+          <Route path="/" element={<Trending />} exact />
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/series" element={<Series />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </div>
       <SimpleBottomNavigation />
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 
