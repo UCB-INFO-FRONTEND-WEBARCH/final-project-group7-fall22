@@ -1,5 +1,6 @@
 .app {
-    min-height: 100vh; // 100% of the viewport height, regardless of the content height
+    /* 100% of the viewport height, regardless of the content height */
+    min-height: 100vh; 
     background-color: #ffffff;
     color: black;
     padding-top: 150px;
