@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import FilterChip from "../../Components/FilterChip/FilterChip";
 import Pagination from '@material-ui/lab/Pagination';
+import SingleContent from "../../Components/SingleContent/SingleContent";
 import "./Series.css";
 
 const Series = () => {
@@ -15,12 +16,13 @@ const Series = () => {
     const [page, setPage] = useState(1);
     // Total number of pages for fetched series
     const [totalPages, setTotalPages] = useState(0);
-    
+
     const genreListBaseUrl = "https://api.themoviedb.org/3/genre/tv/list";
     const seriesListBaseUrl = "https://api.themoviedb.org/3/discover/tv";
     const imageBaseUrl = "https://image.tmdb.org/t/p/w300";
 
     // Import the api key from environment variable
+    // process.env is a global variable in Node.js
     const apiKey = process.env.REACT_APP_API_KEY;
 
     // Fetch series to display
@@ -58,21 +60,21 @@ const Series = () => {
     };
 
     const handleSelectGenre = (id) => {
-        let newList= [...selectedGenreList];
+        let newList = [...selectedGenreList];
         newList.push(id);
         setSelectedGenreList(newList);
     };
 
     const handleDeselectGenre = (id) => {
-        let newList= [...selectedGenreList];
+        let newList = [...selectedGenreList];
         newList = newList.filter(element => element !== id);
         setSelectedGenreList(newList);
     };
-    
+
     useEffect(() => {
         getGenreList().then((data) => {
             setGenreList(data.genres);
-        }); 
+        });
 
         getSeriesList().then((data) => {
             setSeriesList(data.results);
@@ -81,7 +83,7 @@ const Series = () => {
             // pages supported by this API at the moment is 500.
             // Please refer to this post for more detail:
             // https://www.themoviedb.org/talk/61bbb4dc6a300b00977d906c
-            setTotalPages(data.total_pages > 500? 500: data.total_pages);
+            setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
         });
     }, [page, selectedGenreList]);
 
@@ -91,24 +93,41 @@ const Series = () => {
 
             <div>
                 {genreList.map((genre, index) => {
-                    return (<FilterChip key={index} label={genre.name} id={genre.id} selectHandler={handleSelectGenre} deselectHandler={handleDeselectGenre}/>);
+                    return (<FilterChip key={index} label={genre.name} id={genre.id} selectHandler={handleSelectGenre} deselectHandler={handleDeselectGenre} />);
                 })}
             </div>
 
             <div className="series-list">
                 {seriesList.map((series, index) => {
                     return (
-                        <div key={index}>
-                            <img src={`${imageBaseUrl}${series.poster_path}`}/>
-                            <p>{series.name}</p>
-                            <p>Vote Average: {series.vote_average}</p>
-                            <p>First Air Date: {series.first_air_date}</p>
-                        </div>);
+                        // placeholder
+                        // <div key={index}>
+                        //     <img src={`${imageBaseUrl}${series.poster_path}`} />
+                        //     <p>{series.name}</p>
+                        //     <p>Vote Average: {series.vote_average}</p>
+                        //     <p>First Air Date: {series.first_air_date}</p>
+                        // </div>);
+
+                        // render singlecontent component and pass data to it
+                        <SingleContent
+                            key={series.id}
+                            id={series.id}
+                            poster_path={series.poster_path}
+                            name={series.name}
+                            date={series.first_air_date || series.release_date}
+                            media_type="tv"
+                            vote_average={series.vote_average}
+                        >
+
+                        </SingleContent>
+                    )
+
                 })}
+
             </div>
 
             <div>
-                <Pagination count={totalPages} color="primary" onChange={handleChangePagination}/>
+                <Pagination count={totalPages} color="primary" onChange={handleChangePagination} />
             </div>
         </div>
     );
