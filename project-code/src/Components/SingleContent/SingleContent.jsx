@@ -26,7 +26,7 @@ export default function SingleContent({
                     horizontal: 'left',
                 }}
                 badgeContent={vote_average}
-                color={vote_average > 6 ? "primary" : "secondary"}
+                color={vote_average > 5 ? "primary" : "secondary"}
             />
 
             <img className="poster"
