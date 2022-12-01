@@ -44,7 +44,7 @@ const Series = () => {
         const response = await axios.
             get(genreListBaseUrl, {
                 params: {
-                    api_key: 'b68a5f39f961d6c1ac57112da2a81a25',
+                    api_key: apiKey,
                     language: 'en-US'
                 }
             })
