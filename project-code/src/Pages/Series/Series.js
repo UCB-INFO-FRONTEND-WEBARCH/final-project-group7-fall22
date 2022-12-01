@@ -91,7 +91,7 @@ const Series = () => {
         <div>
             <h1>Series</h1>
 
-            <div>
+            <div className="filter">
                 {genreList.map((genre, index) => {
                     return (<FilterChip key={index} label={genre.name} id={genre.id} selectHandler={handleSelectGenre} deselectHandler={handleDeselectGenre} />);
                 })}

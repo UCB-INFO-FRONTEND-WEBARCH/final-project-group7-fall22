@@ -1,8 +1,12 @@
 // use Badge from material-ui and use the badgeContent prop to display the rating
-import { Badge } from "@material-ui/core";
 import "./SingleContent.css";
 import ContentModal from "../ContentModal/ContentModal";
-
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
+import Rating from '@material-ui/lab/Rating';
 
 // info card of the movie or tv show, display the poster, title, date, and rating
 export default function SingleContent({
@@ -18,29 +22,27 @@ export default function SingleContent({
 
     return (
         <ContentModal media_type={media_type} id={id}>
-            {/* different color according to vote */}
-            <Badge
-                variant="standard"
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-                badgeContent={vote_average}
-                color={vote_average > 5 ? "primary" : "secondary"}
-            />
-
-            <img className="poster"
-                src={posterURL}
-                alt={name}
-            />
-
-            <div className="title">{name}</div>
-            
-            <div className="other-info">
-                <span>{media_type === "tv" ? "TV Series" : "Movie"}</span>
-                <span>{date}</span>
-            </div>
-
+            <Card sx={{ width: 280 }}>
+                <CardActionArea>
+                    <CardMedia
+                    component="img"
+                    image={posterURL}
+                    alt={name}
+                    sx={{objectFit: "contain" }}
+                    />
+                    <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {name}
+                    </Typography>
+                    <Typography gutterBottom variant="body1" component="div" className="info">
+                        <span>{media_type === "tv" ? "TV Series" : "Movie"}</span><span>{date}</span>
+                    </Typography>
+                    {vote_average > 0? 
+                    <Rating name="half-rating-read" defaultValue={vote_average} precision={0.1} max={10} readOnly />: 
+                    <Typography gutterBottom variant="overline" component="div"> Rating not available </Typography>}
+                    </CardContent>
+                </CardActionArea>
+            </Card>
         </ContentModal>
   );
 }
