@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import FilterChip from "../../Components/FilterChip/FilterChip";
 import Pagination from '@material-ui/lab/Pagination';
+import ContentCard from "../../Components/ContentCard/ContentCard";
 import "./Series.css";
 
 const Series = () => {
@@ -89,7 +90,7 @@ const Series = () => {
         <div>
             <h1>Series</h1>
 
-            <div>
+            <div className="filter">
                 {genreList.map((genre, index) => {
                     return (<FilterChip key={index} label={genre.name} id={genre.id} selectHandler={handleSelectGenre} deselectHandler={handleDeselectGenre}/>);
                 })}
@@ -98,12 +99,8 @@ const Series = () => {
             <div className="series-list">
                 {seriesList.map((series, index) => {
                     return (
-                        <div key={index}>
-                            <img src={`${imageBaseUrl}${series.poster_path}`}/>
-                            <p>{series.name}</p>
-                            <p>Vote Average: {series.vote_average}</p>
-                            <p>First Air Date: {series.first_air_date}</p>
-                        </div>);
+                        <ContentCard key={index} name={series.name} img={`${imageBaseUrl}${series.poster_path}`} rating={series.vote_average} first_air_date={series.first_air_date} />
+                    );
                 })}
             </div>
 
