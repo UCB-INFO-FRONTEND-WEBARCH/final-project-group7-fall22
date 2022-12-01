@@ -7,8 +7,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Rating from '@material-ui/lab/Rating';
+import { Badge } from "@material-ui/core";
 
-// info card of the movie or tv show, display the poster, title, date, and rating
+// info card of the movie or tv show, display the poster, title, date, and rating,
+// implemented using MUI Card Component
 export default function SingleContent({
     id,
     name,
@@ -22,6 +24,17 @@ export default function SingleContent({
 
     return (
         <ContentModal media_type={media_type} id={id}>
+            {/* Do not display rating if it is not available*/}
+            <Badge
+                invisible={vote_average === 0}
+                variant="standard"
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                badgeContent={vote_average}
+                color={"primary"}
+            >
             <Card sx={{ width: 280 }}>
                 <CardActionArea>
                     <CardMedia
@@ -37,12 +50,14 @@ export default function SingleContent({
                     <Typography gutterBottom variant="body1" component="div" className="info">
                         <span>{media_type === "tv" ? "TV Series" : "Movie"}</span><span>{date}</span>
                     </Typography>
+                    {/* Do not display rating if it is not available*/}
                     {vote_average > 0? 
                     <Rating name="half-rating-read" defaultValue={vote_average} precision={0.1} max={10} readOnly />: 
                     <Typography gutterBottom variant="overline" component="div"> Rating not available </Typography>}
                     </CardContent>
                 </CardActionArea>
             </Card>
+            </Badge>
         </ContentModal>
   );
 }
