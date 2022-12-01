@@ -2,9 +2,9 @@ import Chip from '@material-ui/core/Chip';
 import React, { useState, useEffect } from 'react';
 
 function FilterChip(props) {
-    const {label, id, selectHandler, deselectHandler} = props;
+    const { label, id, selectHandler, deselectHandler } = props;
     const [selected, setSelected] = React.useState(false);
-    
+
     const handleClick = () => {
         setSelected(!selected);
     }
@@ -18,7 +18,7 @@ function FilterChip(props) {
     }, [selected]);
 
     return (
-        <Chip label={label} onClick={handleClick} color={selected ? "primary" : "default"}/>
+        <Chip label={label} onClick={handleClick} color={selected ? "primary" : "default"} />
     );
 }
 
