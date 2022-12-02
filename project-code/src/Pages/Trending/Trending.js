@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import SingleContent from "../../components/SingleContent/SingleContent";
+import SingleContent from "../../Components/SingleContent/SingleContent"
 import Pagination from '@material-ui/lab/Pagination';
 import "./Trending.css";
 
