@@ -9,44 +9,49 @@ const Trending = () => {
   const [page, setPage] = useState(1);
     // Set current content
   const [trendingList, setTrendingList] = useState([]);
-    // Set trending list url from api endpoint
-  const trendingListBaseUrl = "https://api.themoviedb.org/3/trending/all/day";
+
+  const [totalPages, setTotalPages] = useState(0);
+
+
     // Set api key, which is from global
   const apiKey = process.env.REACT_APP_API_KEY;
+    // Set trending list url from api endpoint
+  const trendingListUrl = `https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}`;
 
     // get all trending list by day
   const getTrendingList = async () => {
-    const response = await axios.get(trendingListBaseUrl, {
-        params: {
-            api_Key: apiKey,
-            language: 'en-US'
-        }
-    }). catch((error) => console.log(error))
+    const response = await axios.get(trendingListUrl).catch((error) => console.log(error))
+    console.log(response)
     return response.data;
   };
+
+  
     // set current page
+
   const currentPagination = (event, value) => {
     setPage(value);
+    console.log(page)
     window.scroll(0, 0);
 };
 
   useEffect(() => {
     getTrendingList().then((data) => {
         setTrendingList(data.results);
+        setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
     });
-  }, [page]);
+  }, [page, trendingList]);
 
   return (
     <div>
-      <span>Trending</span>
+      <span className= "trending-title">Trending</span>
       <div className="trending-list">
         {trendingList.map((trending, idx)=>{
             return (
                 <SingleContent
                     key={trending.id}
                     id={trending.id}
-                    poster={trending.poster_path}
-                    title={trending.title || trending.name}
+                    poster_path={trending.poster_path}
+                    name={trending.title || trending.name}
                     date={trending.first_air_date || trending.release_date}
                     media_type={trending.media_type}
                     vote_average={trending.vote_average}>
@@ -54,7 +59,7 @@ const Trending = () => {
             )
         })} 
       </div>
-      <Pagination onchange={currentPagination} />
+      <Pagination count={totalPages} onChange={currentPagination} />
     </div>
   );
 };
