@@ -1,0 +1,6 @@
+.favorite-area {
+  display: flex;
+  justify-content: justify;
+  align-items: center;
+  text-align: center;
+}

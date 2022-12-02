@@ -1,8 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import SingleContent from "../../Components/SingleContent/SingleContent"
 import Pagination from '@material-ui/lab/Pagination';
 import "./Trending.css";
+
+import { FavoriteContext } from "../../App";
 
 const Trending = () => {
     // Set current page
@@ -11,6 +13,9 @@ const Trending = () => {
     const [trendingList, setTrendingList] = useState([]);
 
     const [totalPages, setTotalPages] = useState(0);
+
+    // use context for favorite list
+    const { favoriteList, setFavoriteList } = useContext(FavoriteContext);
 
 
     // Set api key, which is from global
@@ -21,7 +26,7 @@ const Trending = () => {
     // get all trending list by day
     const getTrendingList = async () => {
         const response = await axios.get(trendingListUrl).catch((error) => console.log(error))
-        console.log(response)
+        // console.log(response)
         return response.data;
     };
 
@@ -30,16 +35,31 @@ const Trending = () => {
 
     const currentPagination = (event) => {
         setPage(event.target.textContent);
-        console.log(page)
+        // console.log(page)
         window.scroll(0, 0);
     };
 
     useEffect(() => {
         getTrendingList().then((data) => {
-            setTrendingList(data.results);
-            setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
+            // setTrendingList(data.results);
+            // pick out favorited content from trending list
+            const favoritedContent = data.results.filter((content) => {
+                return favoriteList.find((favorite) => favorite.id === content.id)
+            });
+
+            // add favorited property to trending list
+            const favoritedTrendingList = data.results.map((content) => {
+                return favoritedContent.find((favorite) => favorite.id === content.id) ? { ...content, favorited: true } : { ...content, favorited: false }
+            });
+
+            // set favorited trending list to trending list
+            setTrendingList(favoritedTrendingList);
+            // console.log(favoritedTrendingList)
+
+            console.log(totalPages);
+            setTotalPages(data.total_pages > 10 ? 10 : data.total_pages);
         });
-    }, [page]);
+    }, [page, favoriteList]);
 
     return (
         <div>
@@ -54,7 +74,8 @@ const Trending = () => {
                             name={trending.title || trending.name}
                             date={trending.first_air_date || trending.release_date}
                             media_type={trending.media_type}
-                            vote_average={trending.vote_average}>
+                            vote_average={trending.vote_average}
+                            addedToFavorite={trending.favorited}>
                         </SingleContent>
                     )
                 })}
