@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import SingleContent from "../../Components/SingleContent/SingleContent"
 import Pagination from '@material-ui/lab/Pagination';
 import "./Trending.css";
+import MediaTypeSelector from "../../Components/MediaTypeSelector/MediaTypeSelector";
 
 import { FavoriteContext } from "../../App";
 
@@ -17,11 +18,13 @@ const Trending = () => {
     // use context for favorite list
     const { favoriteList, setFavoriteList } = useContext(FavoriteContext);
 
+    const [mediaType, setMediaType] = useState("all");
+
 
     // Set api key, which is from global
     const apiKey = process.env.REACT_APP_API_KEY;
     // Set trending list url from api endpoint
-    const trendingListUrl = `https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}&page=${page}`;
+    const trendingListUrl = `https://api.themoviedb.org/3/trending/${mediaType}/day?api_key=${apiKey}&page=${page}`;
 
     // get all trending list by day
     const getTrendingList = async () => {
@@ -30,9 +33,7 @@ const Trending = () => {
         return response.data;
     };
 
-
     // set current page
-
     const currentPagination = (event) => {
         setPage(event.target.textContent);
         // console.log(page)
@@ -61,9 +62,18 @@ const Trending = () => {
         });
     }, [page, favoriteList]);
 
+    const selectorHandleChange = (event) => {
+        setMediaType(event.target.value);
+    };
+
+
     return (
         <div>
-            <span className="trending-title">Trending Today</span>
+            <div className="trending-header">
+                <h1 className="trending-title">What's Popular Today</h1>
+                <MediaTypeSelector handleChange={selectorHandleChange} />
+            </div>
+
             <div className="trending-list">
                 {trendingList.map((trending, idx) => {
                     return (
