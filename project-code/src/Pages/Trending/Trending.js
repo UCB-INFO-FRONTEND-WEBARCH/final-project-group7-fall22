@@ -60,7 +60,7 @@ const Trending = () => {
             console.log(totalPages);
             setTotalPages(data.total_pages > 10 ? 10 : data.total_pages);
         });
-    }, [page, favoriteList]);
+    }, [page, favoriteList, mediaType]);
 
     const selectorHandleChange = (event) => {
         setMediaType(event.target.value);
