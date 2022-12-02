@@ -3,21 +3,18 @@
     background-color: #5e548e;
     width:100%;
     color: #ffffff;
-    text-align: center;
-    font-size: 5vw;
-    font-weight: bold;
     cursor: pointer;
-    padding-bottom: 10px;
+    padding: 10px 0px;
 
-    /* fixed position and add some border shadow */
+    /* fixed position when scrolling */
     position: fixed; 
-    box-shadow: 0px 1px 5px black;
-    text-transform: uppercase;
 
-    /* flex box centered */
-    display: flex;
-    justify-content: center;
-
+    /* on top of everything else */
     z-index: 100;
+}
 
+.website-name {
+    margin-left: 100px;
+    font-size: 52px;
+    font-weight: bold;
 }
