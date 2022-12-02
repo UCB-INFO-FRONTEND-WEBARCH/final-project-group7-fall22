@@ -1,10 +1,14 @@
 import "./Header.css";
+import TopNav from "../TopNav/TopNav";
 
 const Header = () => {
     return (
-        <span onClick={() => window.scroll(0, 0)} className="header">
-            Hexagon
-        </span>
+        <div className="header">
+            <span onClick={() => window.scroll(0, 0)} className="website-name">
+                HEXAGON
+            </span>
+            <TopNav/>
+        </div>
     );
 };
 

@@ -1,0 +1,11 @@
+.trending-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 18px;
+    margin: 20px 0px;
+}
+
+.trending-title {
+    font-size: 30px;
+}
