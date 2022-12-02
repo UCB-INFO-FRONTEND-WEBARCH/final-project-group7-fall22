@@ -17,7 +17,8 @@
 
 .filter {
     grid-area: filter;
-    background-color: rgb(245, 241, 252);
+    border-right: 1px #5e548e solid;
+    background-color: rgb(250, 245, 254);
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
