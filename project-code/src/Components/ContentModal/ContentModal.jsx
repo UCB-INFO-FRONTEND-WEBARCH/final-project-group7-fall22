@@ -13,6 +13,9 @@ import { img_500, unavailable } from '../../config/config'
 import { Button } from "@material-ui/core"
 import YouTubeIcon from "@material-ui/icons/YouTube";
 
+import Carousel from "../Carousel/Carousel";
+
+// @import "../../Components/global.scss";
 
 // use the makeStyles hook to create a style object
 const useStyles = makeStyles((theme) => ({ 
@@ -29,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
         // boxShadow: theme.shadows[5],
         // padding: theme.spacing(2, 4, 3),
         backgroundColor: "#231942",
+        // backgroundColor: $modalColor,
         width: "90%",
         height: "80%",
         color: "white",
@@ -142,9 +146,12 @@ export default function TransitionsModal({ media_type, id, children }) {
                                     </span>
                                 }       
 
-                            </div>
+                                {/* carousel section */}
+                                <div className="modal-content-cast-carousel">
+                                    <Carousel media_type={media_type} id={id} />
+                                </div>
 
-                            <div className="modal-content-buttons">
+                                <div className="modal-content-buttons">
                                     <Button
                                         variant="contained"
                                         startIcon = {<YouTubeIcon/>}
@@ -154,7 +161,10 @@ export default function TransitionsModal({ media_type, id, children }) {
                                     >
                                         Watch Trailer
                                     </Button>
+                                </div>
                             </div>
+
+
                         </div>
                     </div>
                 </Fade>
