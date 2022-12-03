@@ -1,4 +1,13 @@
+#grid-container {
+    display: grid;
+    grid-template-columns: minmax(auto, 340px) auto;
+    grid-template-rows: auto 100px;
+    grid-template-areas:"filter series-list"
+                        "filter pagination"
+}  
+
 .series-list {
+    grid-area: series-list;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -7,9 +16,19 @@
 }
 
 .filter {
+    grid-area: filter;
+    border-right: 1px #5e548e solid;
+    background-color: rgb(250, 245, 254);
     display: flex;
     flex-wrap: wrap;
-    justify-content:center;
+    align-content: flex-start;
     gap: 4px;
-    margin: 20px 0px;
+    margin: 20px;
+    padding: 0px 20px;
+}
+
+.pagination {
+    grid-area: pagination;
+    display: flex;
+    justify-content: center;
 }

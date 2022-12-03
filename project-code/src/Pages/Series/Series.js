@@ -113,22 +113,24 @@ const Series = () => {
         <div>
             <h1>Series</h1>
 
-            <div className="filter">
-                {genreList.map((genre, index) => {
-                    return (<FilterChip key={index} label={genre.name} id={genre.id} selectHandler={handleSelectGenre} deselectHandler={handleDeselectGenre} />);
-                })}
-            </div>
+            <div id={'grid-container'}>
+                <div className="filter">
+                    <h2>Filter by Genre</h2>
+                    {genreList.map((genre, index) => {
+                        return (<FilterChip key={index} label={genre.name} id={genre.id} selectHandler={handleSelectGenre} deselectHandler={handleDeselectGenre} />);
+                    })}
+                </div>
 
-            <div className="series-list">
-                {seriesList.map((series, index) => {
-                    return (
-                        // placeholder
-                        // <div key={index}>
-                        //     <img src={`${imageBaseUrl}${series.poster_path}`} />
-                        //     <p>{series.name}</p>
-                        //     <p>Vote Average: {series.vote_average}</p>
-                        //     <p>First Air Date: {series.first_air_date}</p>
-                        // </div>);
+                <div className="series-list">
+                    {seriesList.map((series, index) => {
+                        return (
+                            // placeholder
+                            // <div key={index}>
+                            //     <img src={`${imageBaseUrl}${series.poster_path}`} />
+                            //     <p>{series.name}</p>
+                            //     <p>Vote Average: {series.vote_average}</p>
+                            //     <p>First Air Date: {series.first_air_date}</p>
+                            // </div>);
 
                         // render singlecontent component and pass data to it
                         <SingleContent
@@ -140,17 +142,14 @@ const Series = () => {
                             media_type="tv"
                             vote_average={series.vote_average}
                             addedToFavorite={series.favorited}
-                        >
-
-                        </SingleContent>
-                    )
+                        />
+                    );
 
                 })}
-
-            </div>
-
-            <div>
-                <Pagination count={totalPages} color="primary" onChange={handleChangePagination} />
+                </div>
+                <div className="pagination">
+                    <Pagination  className="pagination" count={totalPages} color="primary" onChange={handleChangePagination} />
+                </div>
             </div>
         </div>
     );
