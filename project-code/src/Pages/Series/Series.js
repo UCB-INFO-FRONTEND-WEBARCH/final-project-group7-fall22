@@ -1,11 +1,16 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import FilterChip from "../../Components/FilterChip/FilterChip";
 import Pagination from '@material-ui/lab/Pagination';
 import SingleContent from "../../Components/SingleContent/SingleContent";
 import "./Series.css";
 
+import { FavoriteContext } from "../../App";
+
 const Series = () => {
+    //use context for favorite list
+    const { favoriteList, setFavoriteList } = useContext(FavoriteContext);
+
     // List of all possible genres
     const [genreList, setGenreList] = useState([]);
     // List of selected genres
@@ -77,7 +82,21 @@ const Series = () => {
         });
 
         getSeriesList().then((data) => {
-            setSeriesList(data.results);
+            // setSeriesList(data.results);
+
+            // pick out favorited content from series list
+            const favoritedContent = data.results.filter((content) => {
+                return favoriteList.find((favorite) => favorite.id === content.id)
+            });
+
+            // add favorited property to trending list
+            const favoritedSeriesList = data.results.map((content) => {
+                return favoritedContent.find((favorite) => favorite.id === content.id) ? { ...content, favorited: true } : { ...content, favorited: false }
+            });
+
+            // set favorited trending list to trending list
+            setSeriesList(favoritedSeriesList);
+
             // The Movie DB backend now has a bug that returns an
             // inaccurate total page count. The maximum number of 
             // pages supported by this API at the moment is 500.
@@ -85,7 +104,10 @@ const Series = () => {
             // https://www.themoviedb.org/talk/61bbb4dc6a300b00977d906c
             setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
         });
-    }, [page, selectedGenreList]);
+    }, [page, selectedGenreList, favoriteList]);
+
+
+
 
     return (
         <div>
@@ -117,6 +139,7 @@ const Series = () => {
                             date={series.first_air_date || series.release_date}
                             media_type="tv"
                             vote_average={series.vote_average}
+                            addedToFavorite={series.favorited}
                         >
 
                         </SingleContent>

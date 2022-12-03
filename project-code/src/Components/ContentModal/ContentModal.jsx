@@ -2,20 +2,15 @@ import { useState, useEffect } from 'react'
 import Modal from "@material-ui/core/Modal"
 import axios from 'axios';
 import { makeStyles } from "@material-ui/core/styles"
+import { Button } from "@material-ui/core"
+import YouTubeIcon from "@material-ui/icons/YouTube";
+import Carousel from "../Carousel/Carousel";
 
 import "./ContentModal.css"
 
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 // image path
 import { img_500, unavailable } from '../../config/config'
 
-import { Button } from "@material-ui/core"
-import YouTubeIcon from "@material-ui/icons/YouTube";
-
-import Carousel from "../Carousel/Carousel";
-
-// @import "../../Components/global.scss";
 
 // use the makeStyles hook to create a style object
 const useStyles = makeStyles((theme) => ({ 
@@ -27,42 +22,22 @@ const useStyles = makeStyles((theme) => ({
     },
     // style for the paper
     paper: {
-        // backgroundColor: theme.palette.background.paper,
-        // border: '2px solid #000',
-        // boxShadow: theme.shadows[5],
-        // padding: theme.spacing(2, 4, 3),
         backgroundColor: "#231942",
-        // backgroundColor: $modalColor,
         width: "90%",
         height: "80%",
         color: "white",
         borderRadius: 10,
         padding: 20,
-        
       },
 }))
 
 
-// transition group modal https://v4.mui.com/zh/components/modal/#modal 
-export default function TransitionsModal({ media_type, id, children }) {
-    const [open, setOpen] = useState(false); // useState hook to set the state of the modal
+// MUI Modal Component https://v4.mui.com/components/modal/#modal  
+export default function ContentModal({ media_type, id, open, handleCloeseModal }) {
     const [content, setContent] = useState({}); // useState hook to set the state of the data content
     const [video, setVideo] = useState({}); // useState hook to set the state of the youtube video content
 
     const classes = useStyles(); // useStyles hook to set the styles of the modal
-
-
-    // open modal
-    const handleOpen = () => {
-        setOpen(true);
-        console.log("open");
-    }
-
-    // close modal
-    const handleCloese = () => {
-        setOpen(false);
-        console.log("close");
-    }
 
     // fetch data from the API
     const fetchData = async () => {
@@ -85,36 +60,15 @@ export default function TransitionsModal({ media_type, id, children }) {
         fetchData();
         fetchVideo();
     }, [])
-    
       
     return (
-  
-        <div
-            // className="single-media"
-            // style={{ cursor: "pointer" }}
-            // onClick={handleOpen} // open modal on click of the media
-        >
-            <div className='single-media'
-                type="button"
-                onClick={handleOpen}
-                style={{ cursor: "pointer" }}
-            >
-                {children}
-            </div>
-
             <Modal
                 open={open}
-                onClose={handleCloese}
+                onClose={handleCloeseModal}
                 className={classes.modal}
                 aria-labelledby="media-info-modal"
                 aria-describedby="media-modal-description"
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                  timeout: 500,
-                }}
             >
-                <Fade in={open}>
                     <div className={classes.paper}>
                         <div className="modal-content">
                             {/* <img
@@ -163,13 +117,8 @@ export default function TransitionsModal({ media_type, id, children }) {
                                     </Button>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
-                </Fade>
-    
             </Modal>
-        </div>
   )
 }

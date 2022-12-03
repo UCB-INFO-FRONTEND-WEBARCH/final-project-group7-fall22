@@ -19,6 +19,8 @@ function Search() {
     //get total pages of contents
     const [totalPages, setTotalPages] = useState(0);
 
+
+    //find all content using keyword
     const fetchSearch = async () => {
         try {
             const { data } = await axios.get(

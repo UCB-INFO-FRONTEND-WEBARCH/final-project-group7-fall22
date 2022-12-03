@@ -1,8 +1,11 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import SingleContent from "../../Components/SingleContent/SingleContent"
 import Pagination from '@material-ui/lab/Pagination';
 import "./Trending.css";
+import MediaTypeSelector from "../../Components/MediaTypeSelector/MediaTypeSelector";
+
+import { FavoriteContext } from "../../App";
 
 const Trending = () => {
     // Set current page
@@ -12,38 +15,65 @@ const Trending = () => {
 
     const [totalPages, setTotalPages] = useState(0);
 
+    // use context for favorite list
+    const { favoriteList, setFavoriteList } = useContext(FavoriteContext);
+
+    const [mediaType, setMediaType] = useState("all");
+
 
     // Set api key, which is from global
     const apiKey = process.env.REACT_APP_API_KEY;
     // Set trending list url from api endpoint
-    const trendingListUrl = `https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}&page=${page}`;
+    const trendingListUrl = `https://api.themoviedb.org/3/trending/${mediaType}/day?api_key=${apiKey}&page=${page}`;
 
     // get all trending list by day
     const getTrendingList = async () => {
         const response = await axios.get(trendingListUrl).catch((error) => console.log(error))
-        console.log(response)
+        // console.log(response)
         return response.data;
     };
 
-
     // set current page
-
     const currentPagination = (event) => {
         setPage(event.target.textContent);
-        console.log(page)
+        // console.log(page)
         window.scroll(0, 0);
     };
 
     useEffect(() => {
         getTrendingList().then((data) => {
-            setTrendingList(data.results);
-            setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
+            // setTrendingList(data.results);
+            // pick out favorited content from trending list
+            const favoritedContent = data.results.filter((content) => {
+                return favoriteList.find((favorite) => favorite.id === content.id)
+            });
+
+            // add favorited property to trending list
+            const favoritedTrendingList = data.results.map((content) => {
+                return favoritedContent.find((favorite) => favorite.id === content.id) ? { ...content, favorited: true } : { ...content, favorited: false }
+            });
+
+            // set favorited trending list to trending list
+            setTrendingList(favoritedTrendingList);
+            // console.log(favoritedTrendingList)
+
+            console.log(totalPages);
+            setTotalPages(data.total_pages > 10 ? 10 : data.total_pages);
         });
-    }, [page]);
+    }, [page, favoriteList, mediaType]);
+
+    const selectorHandleChange = (event) => {
+        setMediaType(event.target.value);
+    };
+
 
     return (
         <div>
-            <span className="trending-title">Trending Today</span>
+            <div className="trending-header">
+                <h1 className="trending-title">What's Popular Today</h1>
+                <MediaTypeSelector handleChange={selectorHandleChange} />
+            </div>
+
             <div className="trending-list">
                 {trendingList.map((trending, idx) => {
                     return (
@@ -54,7 +84,8 @@ const Trending = () => {
                             name={trending.title || trending.name}
                             date={trending.first_air_date || trending.release_date}
                             media_type={trending.media_type}
-                            vote_average={trending.vote_average}>
+                            vote_average={trending.vote_average}
+                            addedToFavorite={trending.favorited}>
                         </SingleContent>
                     )
                 })}
