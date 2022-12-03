@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Solway&display=swap');
 @import "react-alice-carousel/lib/alice-carousel.css";
 
 body {
     margin: 0;
     padding: 0;
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #f5f5f5;
 }

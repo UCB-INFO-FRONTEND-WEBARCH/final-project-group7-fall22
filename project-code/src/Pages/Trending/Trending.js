@@ -90,7 +90,9 @@ const Trending = () => {
                     )
                 })}
             </div>
-            <Pagination count={totalPages} onChange={currentPagination} />
+            <div className="pagination">
+                <Pagination count={totalPages} onChange={currentPagination} />
+            </div> 
         </div>
     );
 };
