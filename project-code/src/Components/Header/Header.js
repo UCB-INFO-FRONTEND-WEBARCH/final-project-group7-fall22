@@ -1,5 +1,6 @@
 import "./Header.css";
 import TopNav from "../TopNav/TopNav";
+import SearchBar from "../SearchBar/SearchBar";
 
 const Header = () => {
     return (
@@ -7,6 +8,7 @@ const Header = () => {
             <span onClick={() => window.scroll(0, 0)} className="website-name">
                 HEXAGON
             </span>
+            <SearchBar/>
             <TopNav/>
         </div>
     );

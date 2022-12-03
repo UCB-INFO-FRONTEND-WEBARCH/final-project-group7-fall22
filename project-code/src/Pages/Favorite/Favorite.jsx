@@ -26,7 +26,7 @@ export default function Favorite() {
         
       <div>
         
-        <span className="favorite-title">Favorited list</span>
+        <h1>Favorited list</h1>
             <div className="favorite-list">
                 {favoriteList?.length === 0? <h1>No items yet</h1>: ""}
                 {
