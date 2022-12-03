@@ -1,13 +1,14 @@
-.search {
-    display: flex;
-    margin: 15px 0;
-    padding: 15px;
-  }
+.result-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 18px;
+  margin: 20px 0px;
+}
 
-  .series-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 18px;
-    margin: 20px 0px;
+.pagination {
+  grid-area: pagination;
+  display: flex;
+  justify-content: center;
+  padding: 22px 0px;
 }

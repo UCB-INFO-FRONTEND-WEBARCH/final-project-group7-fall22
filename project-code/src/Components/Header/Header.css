@@ -11,6 +11,9 @@
 
     /* on top of everything else */
     z-index: 100;
+
+    display: flex;
+    justify-content: flex-start;
 }
 
 .website-name {

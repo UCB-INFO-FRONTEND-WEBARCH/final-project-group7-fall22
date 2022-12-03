@@ -20,9 +20,6 @@ function TopNav() {
                     <Link to="/series"><TvIcon className="icon" />TV Series</Link>
                 </li>
                 <li className="top-nav-li">
-                    <Link to="/search"><SearchIcon className="icon" />Search</Link>
-                </li>
-                <li className="top-nav-li">
                     <Link to="/favorite"><FavoriteIcon className="icon" />Favorite</Link>
                 </li>
             </ul>
