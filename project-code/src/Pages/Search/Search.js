@@ -73,7 +73,7 @@ function Search() {
                             key={index}
                             id={result.id}
                             poster_path={result.poster_path}
-                            name={result.name}
+                            name={result.name || result.title}
                             date={result.first_air_date || result.release_date}
                             media_type={mediaType}
                             vote_average={result.vote_average}

@@ -13,7 +13,8 @@
     z-index: 100;
 
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .website-name {

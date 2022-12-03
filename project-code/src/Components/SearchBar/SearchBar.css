@@ -1,0 +1,28 @@
+.search-bar {
+    height: 32px;
+    display: inline-flex;
+    align-items: center; 
+    background-color: rgb(181, 168, 248);
+    padding: 2px;
+    border-radius: 4px;
+}
+
+.search-selector {
+    border-radius: 4px 0px 0px 4px;
+    padding-left: 10px;
+    height: 32px;
+}
+
+.search-input {
+    width: 180px;
+    padding-left: 10px;
+    height: 26px;
+}
+
+.search-button {
+    background-color: white;
+    height: 32px;
+    border-radius: 0px 4px 4px 0px;
+    margin-left: 1px;
+    border-color: white;
+}

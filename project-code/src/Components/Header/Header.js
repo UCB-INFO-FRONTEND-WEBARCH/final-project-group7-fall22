@@ -8,7 +8,7 @@ const Header = () => {
             <span onClick={() => window.scroll(0, 0)} className="website-name">
                 HEXAGON
             </span>
-            <span><SearchBar/></span>
+            <SearchBar/>
             <TopNav/>
         </div>
     );

@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import "./SearchBar.css";
 
 function SearchBar() {
     const [mediaType, setMediaType] = useState("movie");
@@ -18,24 +19,23 @@ function SearchBar() {
     }
 
     return (
-        <div>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Age"
+        <div className="search-bar">
+            <select
                 value={mediaType}
                 onChange={handleChange}
+                size="small"
+                className="search-selector"
                 >
-                <MenuItem value={"movie"}>Movie</MenuItem>
-                <MenuItem value={"tv"}>TV Series</MenuItem>
-            </Select>
+                <option value={"movie"}>Movie</option>
+                <option value={"tv"}>TV Series</option>
+            </select>
 
-            <TextField onInput={handleInput}/>
+            <input type="text" className="search-input" onInput={handleInput}/>
 
-            <Link to="/search"  state={{ mediaType: mediaType, keyword: keyword }} >
-                <Button>
-                    <SearchIcon fontSize="medium" />
-                </Button>
+            <Link to="/search" state={{ mediaType: mediaType, keyword: keyword }} >
+                <button className="search-button">
+                    <SearchIcon fontSize="medium"/>
+                </button>
             </Link>
         </div>
     );
