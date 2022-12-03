@@ -79,35 +79,41 @@ const Movies = () => {
     return (
         <div>
             <h1>Movies</h1>
-            <div className="filter">
 
-                {genreList.map((genre, i) => {
-                    return (
-                        <FilterChip key={i}
-                            label={genre.name}
-                            id={genre.id}
-                            selectHandler={handleSelectGenre}
-                            deselectHandler={handleDeselectGenre} />)
-                })}
+            <div id="grid-container">
 
-            </div>
-            <div className="movies">
-                {moviesList.map((movie, i) => {
-                    return (
-                        <SingleContent key={i}
-                            id={movie.id}
-                            poster_path={movie.poster_path}
-                            name={movie.name || movie.title}
-                            date={movie.first_air_date || movie.release_date}
-                            media_type="movie"
-                            vote_average={movie.vote_average}
-                            addedToFavorite={movie.favorited}
-                        />)
-                })}
-            </div>
+                <div className="filter">
+                    <h2>Filter by Genre</h2>
+                    <div className="chips">
+                        {genreList.map((genre, i) => {
+                            return (
+                                <FilterChip key={i}
+                                    label={genre.name}
+                                    id={genre.id}
+                                    selectHandler={handleSelectGenre}
+                                    deselectHandler={handleDeselectGenre} />);
+                        })}
+                    </div>
+                </div>
 
-            <div className="pagination">
-                <Pagination count={totalPages} color="primary" onChange={handlePagination} />
+                <div className="movies">
+                    {moviesList.map((movie, i) => {
+                        return (
+                            <SingleContent key={i}
+                                id={movie.id}
+                                poster_path={movie.poster_path}
+                                name={movie.name || movie.title}
+                                date={movie.first_air_date || movie.release_date}
+                                media_type="movie"
+                                vote_average={movie.vote_average}
+                                addedToFavorite={movie.favorited}
+                            />)
+                    })}
+                </div>
+
+                <div className="pagination">
+                    <Pagination count={totalPages} onChange={handlePagination} />
+                </div>
             </div>
         </div>
     );

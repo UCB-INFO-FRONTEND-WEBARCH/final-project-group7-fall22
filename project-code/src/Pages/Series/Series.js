@@ -116,9 +116,11 @@ const Series = () => {
             <div id={'grid-container'}>
                 <div className="filter">
                     <h2>Filter by Genre</h2>
-                    {genreList.map((genre, index) => {
-                        return (<FilterChip key={index} label={genre.name} id={genre.id} selectHandler={handleSelectGenre} deselectHandler={handleDeselectGenre} />);
-                    })}
+                    <div className="chips">
+                        {genreList.map((genre, index) => {
+                            return (<FilterChip key={index} label={genre.name} id={genre.id} selectHandler={handleSelectGenre} deselectHandler={handleDeselectGenre} />);
+                        })}
+                    </div>
                 </div>
 
                 <div className="series-list">
@@ -148,7 +150,7 @@ const Series = () => {
                 })}
                 </div>
                 <div className="pagination">
-                    <Pagination  className="pagination" count={totalPages} color="primary" onChange={handleChangePagination} />
+                    <Pagination count={totalPages} onChange={handleChangePagination} />
                 </div>
             </div>
         </div>

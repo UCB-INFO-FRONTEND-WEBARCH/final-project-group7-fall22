@@ -5,3 +5,9 @@
     gap: 18px;
     margin: 20px 0px;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 22px 0px;
+}
