@@ -29,19 +29,28 @@ export default function SingleContent({
 
     const posterURL = `https://image.tmdb.org/t/p/w300${poster_path}`; // get the poster image from the API
 
+    // state of the modal
+    const [open, setOpen] = useState(false);
+
+    // set the state of modal to open upon clicking a card
+    const handleClickCard = () => {
+        setOpen(true);
+    }
+    
+    // handle modal close event
+    const handleCloseModal = () => {
+        setOpen(false);
+    }
 
     // handle add to favorite when clicking the heart icon and save to local storage
     const { favoriteList, setFavoriteList } = useContext(FavoriteContext);
 
     // track favorited or not
-    const [favorited, setFavorited] = useState(false)
-
+    const [favorited, setFavorited] = useState(false);
 
     // favorite to unfavorite, vice versa
     const handleAddToFavorite = (e) => {
         setFavorited(!favorited)
-
-
     };
 
     // fetch the favorite list from local storage
@@ -61,11 +70,8 @@ export default function SingleContent({
         
     }, [favorited])
     
-
-
     return (
         <div className="single-content-area">
-        <ContentModal media_type={media_type} id={id}>
             {/* Do not display rating if it is not available*/}
             <Badge
                 invisible={vote_average === 0}
@@ -78,7 +84,7 @@ export default function SingleContent({
                 color={"primary"}
             >
             <Card sx={{ width: 280 }}>
-                <CardActionArea className="info-card">
+                <CardActionArea className="info-card" onClick={handleClickCard}>
                     
                     <CardMedia
                         component="img"
@@ -102,13 +108,12 @@ export default function SingleContent({
                 </CardActionArea>
             </Card>
             </Badge>
-
-        </ContentModal>
             <div className="add-to-favorite" onClick={handleAddToFavorite}>
             {/* <div className="overlay"> */}
                 <AddFavorite favorited={addedToFavorite}/>
             {/* </div> */}
             </div>
+            <ContentModal media_type={media_type} id={id} open={open} handleCloeseModal={handleCloseModal}/>
     </div>
   );
 }
