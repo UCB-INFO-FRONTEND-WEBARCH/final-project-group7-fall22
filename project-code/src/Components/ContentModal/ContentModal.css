@@ -1,12 +1,43 @@
-.modal-content {
+.modal-background {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  color: white;
   display: flex;
-  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.modal-background-dark-overlay {
+  background-color:rgba(0, 0, 0, 0.6); 
+  overflow-y: scroll;
+}
+
+.content {
+  margin: 70px;
+}
+
+.rating-score {
+  margin-left: 20px;
+}
+
+.overview-trailer {
+  display: flex;
+  flex-wrap: wrap;  
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
-  overflow-y: scroll;
-  width: 100%;
-  max-height: 100%;
+}
+
+.overview-title {
+  margin-top: 180px;
+}
+
+.overview-detail {
+  width: 70%;
+}
+
+.trailer-button {
+  width: 20%;
+  height: 60px;
 }
 
 .modal-content-cast-carousel {
@@ -14,36 +45,4 @@
   flex-direction: column;
   justify-content: space-evenly;
   max-width: 100%;
-}
-
-.modal-content-detail {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 0 10px;
-  width: 90%;
-  height: 80%;
-  font-weight: 300;
-}
-
-.modal-poster-landscape {
-  object-fit: contain;
-  border-radius: 10px;
-}
-
-.tagline {
-  align-self: center;
-  padding: 0 10px;
-}
-
-.modal-content-overview {
-  border: 2px solid #e6e6e6;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px;
-  display: flex;
-  height: 100%;
-  overflow-y: scroll;
-  text-align: justify;
 }

@@ -8,10 +8,6 @@ import Carousel from "../Carousel/Carousel";
 
 import "./ContentModal.css"
 
-// image path
-import { img_500, unavailable } from '../../config/config'
-
-
 // use the makeStyles hook to create a style object
 const useStyles = makeStyles((theme) => ({ 
     // modal styles
@@ -22,12 +18,11 @@ const useStyles = makeStyles((theme) => ({
     },
     // style for the paper
     paper: {
-        backgroundColor: "#231942",
-        width: "90%",
+        backgroundColor: "black",
+        width: "80%",
         height: "80%",
-        color: "white",
         borderRadius: 10,
-        padding: 20,
+        padding: 10,
       },
 }))
 
@@ -55,6 +50,12 @@ export default function ContentModal({ media_type, id, open, handleCloeseModal }
         setVideo(data.results[0]?.key); // get the first video from the results array
     }
 
+    // prepare info to display on modal
+    const backdropBaseUrl = "https://image.tmdb.org/t/p/original";
+    const backdropFullUrl = `${backdropBaseUrl}/${content.backdrop_path}`;
+    const date = media_type == "movie"? content.release_date : content.first_air_date;
+    const year = date? date.substring(0, 4) : null;
+
     // useEffect hook to fetch data and video for display in the modal
     useEffect(() => {
         fetchData();
@@ -62,63 +63,53 @@ export default function ContentModal({ media_type, id, open, handleCloeseModal }
     }, [])
       
     return (
-            <Modal
-                open={open}
-                onClose={handleCloeseModal}
-                className={classes.modal}
-                aria-labelledby="media-info-modal"
-                aria-describedby="media-modal-description"
-            >
-                    <div className={classes.paper}>
-                        <div className="modal-content">
-                            {/* <img
-                                className='modal-poster'
-                                src={content.poster_path ? `${img_500}/${content.poster_path}` : unavailable}
-                                alt = {content.name}
-                            /> */}
-                            <img
-                                className='modal-poster-landscape'
-                                src={content.backdrop_path ? `${img_500}/${content.backdrop_path}` : unavailable}
-                                alt = {content.name || content.title}
-                            />
-
-                            <div className="modal-content-detail">
-                                <span className="modal-content-title">
-                                    {content.name || content.title}
-                                    ({(content.first_air_date || content.release_date || "-----").substring(0, 4)}) 
+        <Modal
+            open={open}
+            onClose={handleCloeseModal}
+            className={classes.modal}
+            aria-labelledby="media-info-modal"
+            aria-describedby="media-modal-description"
+        >
+            <div className={classes.paper}>
+                <div className='modal-background' style={{backgroundImage: `url(${backdropFullUrl})`}}>
+                    <div className='modal-background-dark-overlay'>
+                        <div className='content'>
+                            <h1 className="title">{media_type=="movie"? content.title : content.name} {`(${year})`}</h1>                                    
+                            
+                            <p>🌟
+                                <span className='rating-score'>
+                                    {content.vote_average? content.vote_average: "Rating not available"}
                                 </span>
-                                {content.vote_average && (
-                                        <span className="modal-content-rating">🌟
-                                        {content.vote_average}</span>
-                                    )}
-                                {content.tagline && (
-                                    <span className="tagline">{content.tagline}</span>
-                                )}
-                                {content.overview && 
-                                    <span className='modal-content-overview'>
-                                    {content.overview}
-                                    </span>
-                                }       
+                            </p>
 
-                                {/* carousel section */}
-                                <div className="modal-content-cast-carousel">
-                                    <Carousel media_type={media_type} id={id} />
+                            <p><i>{content.tagline}</i></p>
+
+                            <h3 className="overview-title">Overview</h3>
+                            <div className="overview-trailer">
+                                <div className="overview-detail">
+                                    <p>{content.overview}</p>
                                 </div>
 
-                                <div className="modal-content-buttons">
-                                    <Button
-                                        variant="contained"
-                                        startIcon = {<YouTubeIcon/>}
-                                        color="primary"
-                                        target="_blank"
-                                        href={  `https://www.youtube.com/watch?v=${video}`}
-                                    >
-                                        Watch Trailer
-                                    </Button>
-                                </div>
+                                <Button
+                                    className="trailer-button"
+                                    variant="contained"
+                                    startIcon = {<YouTubeIcon/>}
+                                    color="primary"
+                                    target="_blank"
+                                    href={  `https://www.youtube.com/watch?v=${video}`}
+                                >
+                                    Player Trailer
+                                </Button>
+                            </div>
+
+                            <div className="modal-content-cast-carousel">
+                                <h3>Cast</h3>
+                                <Carousel media_type={media_type} id={id} />
                             </div>
                         </div>
                     </div>
-            </Modal>
+                </div>
+            </div>
+        </Modal>
   )
 }
