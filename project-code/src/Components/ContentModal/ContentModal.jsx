@@ -53,7 +53,7 @@ export default function ContentModal({ media_type, id, open, handleCloeseModal }
     // prepare info to display on modal
     const backdropBaseUrl = "https://image.tmdb.org/t/p/original";
     const backdropFullUrl = `${backdropBaseUrl}/${content.backdrop_path}`;
-    const date = media_type == "movie"? content.release_date : content.first_air_date;
+    const date = media_type === "movie"? content.release_date : content.first_air_date;
     const year = date? date.substring(0, 4) : null;
 
     // useEffect hook to fetch data and video for display in the modal
@@ -74,7 +74,7 @@ export default function ContentModal({ media_type, id, open, handleCloeseModal }
                 <div className='modal-background' style={{backgroundImage: `url(${backdropFullUrl})`}}>
                     <div className='modal-background-dark-overlay'>
                         <div className='content'>
-                            <h1 className="title">{media_type=="movie"? content.title : content.name} {`(${year})`}</h1>                                    
+                            <h1 className="title">{media_type==="movie"? content.title : content.name} {`(${year})`}</h1>                                    
                             
                             <p>🌟
                                 <span className='rating-score'>
@@ -84,7 +84,7 @@ export default function ContentModal({ media_type, id, open, handleCloeseModal }
 
                             <p><i>{content.tagline}</i></p>
 
-                            <h3 className="overview-title">Overview</h3>
+                            <h3 className="overview-title">{content.overview? "Overview" : null}</h3>
                             <div className="overview-trailer">
                                 <div className="overview-detail">
                                     <p>{content.overview}</p>

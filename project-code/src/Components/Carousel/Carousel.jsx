@@ -1,41 +1,25 @@
 import {useEffect, useState} from 'react'
 import AliceCarousel from "react-alice-carousel";
-import { img_300, noPicture } from "../../config/config";
+import { img_300 } from "../../config/config";
 import "react-alice-carousel/lib/alice-carousel.css";
 import axios from 'axios';
 import "./Carousel.css";
-
-const handleDragStart = (e) => e.preventDefault();
-
-
-const responsive = {
-    0: {
-      items: 3,
-    },
-    512: {
-      items: 5,
-    },
-    1024: {
-      items: 7,
-    },
-  };
+import noImgPeople from "../../img/no_img_people.png";
 
 export default function Carousel({ media_type, id }) {
     const [credits, setCredits] = useState([]); // useState hook to set the state of the credits
-
 
     // map through the credits and display the cast members
     const items = credits.map((c) => {
         return (
             <div className="cast-info-item">
                 <img
-                    src={c.profile_path ? `${img_300}/${c.profile_path}` : noPicture}
-                    alt={c?.name}
-                    onDragStart={handleDragStart}
+                    src={c.profile_path ? `${img_300}/${c.profile_path}` : noImgPeople}
+                    alt={c.name}
                     className='cast-info-img'
                 />
-                <b className='cast-info-name'>{c?.name}</b>
-                {/* <div className="cast-info-character">{c?.character}</div> */}
+                <p>{c.name} <br/>
+                {c.character? `Character: ${c.character}` : null}</p>
             </div>
         );
     })
@@ -61,17 +45,23 @@ export default function Carousel({ media_type, id }) {
         fetchCredits(); // call the fetchCredits function
     }, []); // empty array as the second argument to prevent infinite loop
 
+    const responsive = {
+        0: {
+            items: 5
+        }
+    }
+
     return (
         <AliceCarousel
             mouseTracking
+            disableSlideInfo={false}
             autoPlay
             infinite
-            disableDotsControls
+            stopOnHover
             disableButtonsControls
-            responsive={responsive}
-            items={items} />
- 
-  )
+            items={items} 
+            responsive={responsive} />
+    );
 }
 
 

@@ -1,6 +1,6 @@
 #grid-container {
     display: grid;
-    grid-template-columns: minmax(auto, 340px) auto;
+    grid-template-columns: minmax(auto, 280px) auto;
     grid-template-rows: auto 100px;
     grid-template-areas:"filter series"
                         "filter pagination"
@@ -17,7 +17,7 @@
 
 .filter {
     grid-area: filter;
-    border-right: 1px #5e548e solid;
+    text-align: left;
     background-color: rgb(250, 245, 254);
     margin: 20px;
     padding: 0px 20px;
