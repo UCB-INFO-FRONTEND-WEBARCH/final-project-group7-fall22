@@ -19,7 +19,7 @@ export default function Carousel({ media_type, id }) {
                     className='cast-info-img'
                 />
                 <p>{c.name} <br/>
-                Character: {c.character}</p>
+                {c.character? `Character: ${c.character}` : null}</p>
             </div>
         );
     })
