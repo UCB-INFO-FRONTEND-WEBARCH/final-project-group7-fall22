@@ -9,6 +9,7 @@ import { CardActionArea } from '@mui/material';
 import Rating from '@material-ui/lab/Rating';
 import { Badge } from "@material-ui/core";
 import AddFavorite from "../AddFavorite/AddFavorite";
+import noImgPoster from "../../img/no_img_poster.png";
 
 // use context to get the user's favorite list
 import { useContext, useState } from "react";
@@ -55,7 +56,6 @@ export default function SingleContent({
 
     // fetch the favorite list from local storage
     useEffect(() => {
-        console.log(favoriteList)   
         if (favorited && favoriteList.filter((item) => item.id === id).length === 0) {
             // avoid duplicate items in the favorite list
             setFavoriteList([...favoriteList, { id, name, date, media_type, poster_path, vote_average, favorited }])
@@ -67,7 +67,6 @@ export default function SingleContent({
             // save to local storage
             localStorage.setItem("favoriteList", JSON.stringify(favoriteList));
         }
-        
     }, [favorited])
     
     return (
@@ -88,7 +87,7 @@ export default function SingleContent({
                     
                     <CardMedia
                         component="img"
-                        image={posterURL}
+                        image={poster_path? posterURL : noImgPoster}
                         alt={name}
                         sx={{ objectFit: "contain" }}
                         />
