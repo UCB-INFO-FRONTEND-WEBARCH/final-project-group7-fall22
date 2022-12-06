@@ -4,12 +4,16 @@ import FilterChip from "../../Components/FilterChip/FilterChip";
 import Pagination from '@material-ui/lab/Pagination';
 import SingleContent from "../../Components/SingleContent/SingleContent";
 import "./Series.css";
+import SortBySelector from "../../Components/SortBySelector/SortBySelector";
 
 import { FavoriteContext } from "../../App";
 
 const Series = () => {
     //use context for favorite list
     const { favoriteList, setFavoriteList } = useContext(FavoriteContext);
+
+    // Value of the sort by selector
+    const [sortBy, setSortBy] = useState("popularity.desc");
 
     // List of all possible genres
     const [genreList, setGenreList] = useState([]);
@@ -21,10 +25,13 @@ const Series = () => {
     const [page, setPage] = useState(1);
     // Total number of pages for fetched series
     const [totalPages, setTotalPages] = useState(0);
+    const [year, setYear] = useState("");
+
+    const [watchProviderList, setWatchProviderList] = useState([]);
+    const [selectedWatchProviderList, setSelectedWatchProviderList] = useState([]);
 
     const genreListBaseUrl = "https://api.themoviedb.org/3/genre/tv/list";
     const seriesListBaseUrl = "https://api.themoviedb.org/3/discover/tv";
-    const imageBaseUrl = "https://image.tmdb.org/t/p/w300";
 
     // Import the api key from environment variable
     // process.env is a global variable in Node.js
@@ -38,8 +45,11 @@ const Series = () => {
                     api_key: apiKey,
                     page: page,
                     language: 'en-US',
-                    sort_by: 'popularity.desc',
-                    with_genres: selectedGenreList.join()
+                    sort_by: sortBy,
+                    with_genres: selectedGenreList.join(),
+                    first_air_date_year: year,
+                    with_watch_providers: selectedWatchProviderList.join(),
+                    watch_region: "US"
                 }
             })
             .catch((err) => console.log(err));
@@ -59,6 +69,13 @@ const Series = () => {
         return response.data;
     };
 
+    const getWatchProviders = async () => {
+        const result = await axios.get(
+            `https://api.themoviedb.org/3/watch/providers/tv?api_key=${apiKey}&language=en-US&watch_region=US`
+        ).catch((err) => console.log(err));
+        return result.data;
+    };
+
     const handleChangePagination = (event, value) => {
         setPage(value);
         window.scroll(0, 0);
@@ -76,9 +93,22 @@ const Series = () => {
         setSelectedGenreList(newList);
     };
 
+    const handleSelectWatchProvider  = (id) => {
+        setSelectedWatchProviderList([...selectedWatchProviderList, id]);
+    };
+
+    const handleDeselectWatchProvider  = (id) => {
+        setSelectedWatchProviderList([...selectedWatchProviderList].filter(e => e !== id));
+    };
+
     useEffect(() => {
         getGenreList().then((data) => {
             setGenreList(data.genres);
+        });
+
+        // display top 15 providers
+        getWatchProviders().then((data) => {
+            setWatchProviderList(data.results.slice(0, 16));
         });
 
         getSeriesList().then((data) => {
@@ -104,14 +134,21 @@ const Series = () => {
             // https://www.themoviedb.org/talk/61bbb4dc6a300b00977d906c
             setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
         });
-    }, [page, selectedGenreList, favoriteList]);
+    }, [page, selectedGenreList, favoriteList, sortBy, year, selectedWatchProviderList]);
 
+    const handleSortByChange = (event) => {
+        setSortBy(event.target.value)
+    }
 
-
+    const handleYearSubmit = (event) => {
+        event.preventDefault();
+        setYear(event.target.year.value);
+    }
 
     return (
         <div>
             <h1>Series</h1>
+            <SortBySelector onChange={handleSortByChange}/>
 
             <div id={'grid-container'}>
                 <div className="filter">
@@ -119,6 +156,24 @@ const Series = () => {
                     <div className="chips">
                         {genreList.map((genre, index) => {
                             return (<FilterChip key={index} label={genre.name} id={genre.id} selectHandler={handleSelectGenre} deselectHandler={handleDeselectGenre} />);
+                        })}
+                    </div>
+                    <h2>Filter by Year</h2>
+                    <form onSubmit={handleYearSubmit}>
+                        <input type={"text"} name={"year"}/>
+                        <p>Example: 2022</p>
+                        <input type={"submit"}/>
+                    </form>
+
+                    <h2>Filter by Watch Provider</h2>
+                    <div className="chips">
+                        {watchProviderList.map((provider, i) => {
+                            return (
+                                <FilterChip key={i}
+                                    label={provider.provider_name}
+                                    id={provider.provider_id}
+                                    selectHandler={handleSelectWatchProvider}
+                                    deselectHandler={handleDeselectWatchProvider} />);
                         })}
                     </div>
                 </div>

@@ -5,11 +5,17 @@ import FilterChip from "../../Components/FilterChip/FilterChip";
 import Pagination from '@material-ui/lab/Pagination';
 import "./Movies.css";
 import { FavoriteContext } from "../../App";
+import SortBySelector from "../../Components/SortBySelector/SortBySelector";
+
 const Movies = () => {
 
     //use context for favorite list
     const { favoriteList, setFavoriteList } = useContext(FavoriteContext);
 
+    const [watchProviderList, setWatchProviderList] = useState([]);
+    const [selectedWatchProviderList, setSelectedWatchProviderList] = useState([]);
+    const [year, setYear] = useState("");
+    const [sortBy, setSortBy] = useState("popularity.desc");
     const [genreList, setGenreList] = useState([]);
     const [selectedGenreList, setSelectedGenreList] = useState([]);
     const [page, setPage] = useState(1);
@@ -18,11 +24,18 @@ const Movies = () => {
 
     const apiKey = process.env.REACT_APP_API_KEY;
     const getMovies = async () => {
+        console.log(selectedWatchProviderList);
         const result = await axios.get(
-            `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc`, {
+            `https://api.themoviedb.org/3/discover/movie`, {
             params: {
+                api_key: apiKey,
                 page: page,
-                with_genres: selectedGenreList.join()
+                with_genres: selectedGenreList.join(),
+                sort_by: sortBy,
+                primary_release_year: year,
+                language: "en-US",
+                with_watch_providers: selectedWatchProviderList.join(),
+                watch_region: "US"
             }
         })
             .catch((err) => console.log(err));
@@ -33,6 +46,13 @@ const Movies = () => {
     const getGenres = async () => {
         const result = await axios.get(
             `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`
+        ).catch((err) => console.log(err));
+        return result.data;
+    };
+
+    const getWatchProviders = async () => {
+        const result = await axios.get(
+            `https://api.themoviedb.org/3/watch/providers/movie?api_key=${apiKey}&language=en-US&watch_region=US`
         ).catch((err) => console.log(err));
         return result.data;
     };
@@ -50,10 +70,22 @@ const Movies = () => {
         setSelectedGenreList([...selectedGenreList].filter(e => e !== id));
     };
 
+    const handleSelectWatchProvider  = (id) => {
+        setSelectedWatchProviderList([...selectedWatchProviderList, id]);
+    };
+
+    const handleDeselectWatchProvider  = (id) => {
+        setSelectedWatchProviderList([...selectedWatchProviderList].filter(e => e !== id));
+    };
+
     useEffect(() => {
-        // window.scroll(0, 0);
-        getGenres().then((r) => {
-            setGenreList(r.genres);
+        getGenres().then((data) => {
+            setGenreList(data.genres);
+        });
+        
+        // display top 15 providers
+        getWatchProviders().then((data) => {
+            setWatchProviderList(data.results.slice(0, 16));
         });
 
         getMovies().then((data) => {
@@ -73,12 +105,21 @@ const Movies = () => {
             setMoviesList(favoritedMoviesList);
             setTotalPages(data.total_pages);
         });
-    }, [page, selectedGenreList, favoriteList]);
+    }, [page, selectedGenreList, favoriteList, sortBy, year, selectedWatchProviderList]);
 
+    const handleSortByChange = (event) => {
+        setSortBy(event.target.value);
+    }
+
+    const handleYearSubmit = (event) => {
+        event.preventDefault();
+        setYear(event.target.year.value);
+    }
 
     return (
         <div>
             <h1>Movies</h1>
+            <SortBySelector onChange={handleSortByChange}/>
 
             <div id="grid-container">
 
@@ -94,12 +135,31 @@ const Movies = () => {
                                     deselectHandler={handleDeselectGenre} />);
                         })}
                     </div>
+
+                    <h2>Filter by Year</h2>
+                    <form onSubmit={handleYearSubmit}>
+                        <input type={"text"} name={"year"}/>
+                        <p>Example: 2022</p>
+                        <input type={"submit"}/>
+                    </form>
+
+                    <h2>Filter by Watch Provider</h2>
+                    <div className="chips">
+                        {watchProviderList.map((provider, i) => {
+                            return (
+                                <FilterChip key={i}
+                                    label={provider.provider_name}
+                                    id={provider.provider_id}
+                                    selectHandler={handleSelectWatchProvider}
+                                    deselectHandler={handleDeselectWatchProvider} />);
+                        })}
+                    </div>
                 </div>
 
                 <div className="movies">
                     {moviesList.map((movie, i) => {
                         return (
-                            <SingleContent key={i}
+                            <SingleContent key={movie.id}
                                 id={movie.id}
                                 poster_path={movie.poster_path}
                                 name={movie.name || movie.title}

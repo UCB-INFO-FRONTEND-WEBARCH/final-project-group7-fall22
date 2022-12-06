@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react'
 import AliceCarousel from "react-alice-carousel";
-import { img_300 } from "../../config/config";
 import "react-alice-carousel/lib/alice-carousel.css";
 import axios from 'axios';
 import "./Carousel.css";
@@ -9,12 +8,14 @@ import noImgPeople from "../../img/no_img_people.png";
 export default function Carousel({ media_type, id }) {
     const [credits, setCredits] = useState([]); // useState hook to set the state of the credits
 
+    const profileBaseUrl = "https://image.tmdb.org/t/p/w300"
+
     // map through the credits and display the cast members
     const items = credits.map((c) => {
         return (
             <div className="cast-info-item">
                 <img
-                    src={c.profile_path ? `${img_300}/${c.profile_path}` : noImgPeople}
+                    src={c.profile_path ? `${profileBaseUrl}/${c.profile_path}` : noImgPeople}
                     alt={c.name}
                     className='cast-info-img'
                 />
@@ -55,9 +56,6 @@ export default function Carousel({ media_type, id }) {
         <AliceCarousel
             mouseTracking
             disableSlideInfo={false}
-            autoPlay
-            infinite
-            stopOnHover
             disableButtonsControls
             items={items} 
             responsive={responsive} />
