@@ -98,7 +98,7 @@ export default function ContentModal({ media_type, id, open, handleCloeseModal }
                                     target="_blank"
                                     href={  `https://www.youtube.com/watch?v=${video}`}
                                 >
-                                    Player Trailer
+                                    Play Trailer
                                 </Button>
                             </div>
 
